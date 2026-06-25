@@ -1,0 +1,33 @@
+{
+  "name": "autoqa-ai-platform",
+  "version": "1.0.0",
+  "description": "AutoQA AI - Autonomous Testing & Self-Healing Platform",
+  "main": "dist/index.js",
+  "scripts": {
+    "backend": "nodemon --watch src -e ts --exec ts-node src/index.ts",
+    "frontend": "npm --prefix frontend run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "build:backend": "tsc",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "postinstall": "node -e \"const fs = require('fs'); if (!fs.existsSync('data')) fs.mkdirSync('data'); if (!fs.existsSync('data/runs')) fs.mkdirSync('data/runs', {recursive: true});\""
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "glob": "^10.4.5",
+    "playwright": "^1.61.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "concurrently": "^9.1.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
