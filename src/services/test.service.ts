@@ -14,8 +14,19 @@ export class TestService {
   ): Promise<TestCase[]> {
     const rawTests = await AIService.generateTests(projectPath, files, specsContent);
     
-    // Inject the projectId
-    const tests = rawTests.map(tc => ({
+    // Safety guard to extract the array if the LLM wraps it in an object key
+    let testsArray: any[] = [];
+    if (Array.isArray(rawTests)) {
+      testsArray = rawTests;
+    } else if (rawTests && typeof rawTests === 'object') {
+      if (Array.isArray((rawTests as any).testCases)) {
+        testsArray = (rawTests as any).testCases;
+      } else if (Array.isArray((rawTests as any).tests)) {
+        testsArray = (rawTests as any).tests;
+      }
+    }
+
+    const tests = testsArray.map(tc => ({
       ...tc,
       projectId
     }));
